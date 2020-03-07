@@ -10,18 +10,19 @@
         <!--            页面主体-->
         <el-container>
 <!--侧边栏-->
-            <el-aside width="200px">
+            <el-aside :width="isCollapse ? '64px' : '200px'">
+                <div class="toggle-button" @click="toggleCollapse"> ||| </div>
 <!--                侧边栏菜单区域-->
                 <el-menu
                         background-color="#333744"
                         text-color="#fff"
-                        active-text-color="#ffd04b">
+                        active-text-color="#409eff" unique-opened :collapse="isCollapse" :collapse-transition="false">
 <!--                    一级菜单-->
                     <el-submenu :index="item.id + ''" v-for="item in menulist" :key="item.id" >
 <!--                        一级菜单模板区域-->
                         <template slot="title">
 <!--                            图标-->
-                            <i class="el-icon-location"></i>
+                            <i :class="iconsObj[item.id]"></i>
 <!--                            文本-->
                             <span>{{item.authName}}</span>
                         </template>
@@ -29,7 +30,7 @@
                         <el-menu-item :index="subItem.id" v-for="subItem in item.children" :key="subItem.id">
                             <template slot="title">
                                 <!--                            图标-->
-                                <i class="el-icon-location"></i>
+                                <i class="el-icon-menu"></i>
                                 <!--                            文本-->
                                 <span>{{subItem.authName}}</span>
                             </template>
@@ -39,7 +40,10 @@
                 </el-menu>
             </el-aside>
 <!--            右侧内容-->
-            <el-main>Main</el-main>
+            <el-main>
+<!--                路由占位符-->
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </el-container>
 </template>
@@ -49,7 +53,15 @@
         data(){
           return{
               //左侧菜单数据
-              menulist:[]
+              menulist:[],
+              iconsObj:{
+                  '125': 'el-icon-user-solid',
+                  '103': 'el-icon-s-platform',
+                  '101': 'el-icon-s-goods',
+                  '102': 'el-icon-s-order',
+                  '145': 'el-icon-s-marketing'
+              },
+              isCollapse: false
           }
         },
         created() {
@@ -66,6 +78,10 @@
                 if(res.meta.status !== 200) return this.$message.error(res.meta.msg)
                 this.menulist = res.data
                 console.log(res)
+            },
+        //    点击按钮菜单折叠与展开
+            toggleCollapse(){
+                this.isCollapse = ! this.isCollapse
             }
         }
     }
@@ -90,6 +106,9 @@
 }
     .el-aside{
         background-color: #333744;
+        .el-menu{
+            border-right: none;
+        }
     }
     .el-main{
         background-color: #EAEdf1;
@@ -97,4 +116,17 @@
     .home-container{
         height: 100%;
     }
+    .iconfont{
+        margin-right: 10px;
+    }
+    .toggle-button{
+        background-color: #4a5064;
+        font-size: 10px;
+        line-height: 24px;
+        color: white;
+        text-align: center;
+        letter-spacing: 0.2em;
+        cursor: pointer;
+    }
+
 </style>
