@@ -5,6 +5,7 @@
             <div>
                 <img src="../assets/avatar.png" width="50px" alt="">
                 <span>电商管理系统</span>
+                <span style="font-size: 18px"> 鹅总, 下午好</span>
             </div>
             <el-button type="info" @click="logout">退出</el-button></el-header>
         <!--            页面主体-->
@@ -20,7 +21,8 @@
                         unique-opened
                         :collapse="isCollapse"
                         :collapse-transition="false"
-                        :router="true" >
+                        :router="true"
+                        :default-active="$route.path">
 <!--                    一级菜单-->
                     <el-submenu :index="item.id + ''" v-for="item in menulist" :key="item.id" >
 <!--                        一级菜单模板区域-->
@@ -31,7 +33,7 @@
                             <span>{{item.authName}}</span>
                         </template>
 <!--                        二级菜单-->
-                        <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id">
+                        <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id" >
                             <template slot="title">
                                 <!--                            图标-->
                                 <i class="el-icon-menu"></i>
@@ -86,7 +88,11 @@
         //    点击按钮菜单折叠与展开
             toggleCollapse(){
                 this.isCollapse = ! this.isCollapse
-            }
+            },
+            //保存连接激活状态
+            // saveNavState(activePath){
+            //     window.sessionStorage.setItem('activePath',activePath)
+            // }
         }
     }
 </script>

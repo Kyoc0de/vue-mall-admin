@@ -18,7 +18,14 @@ import {
     Menu,
     Submenu,
     MenuItemGroup,
-    MenuItem
+    MenuItem,
+    Breadcrumb,
+    BreadcrumbItem,
+    Card,
+    Row,
+    Col,
+    Table,
+    TableColumn
 } from 'element-ui'
 
 
@@ -34,5 +41,12 @@ Vue.use(Menu)
 Vue.use(Submenu)
 Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
+Vue.use(BreadcrumbItem)
+Vue.use(Breadcrumb)
+Vue.use(Card)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Table)
+Vue.use(TableColumn)
 //讲弹窗组件挂载到vue上 可通过this.$message访问
 Vue.prototype.$message = Message
