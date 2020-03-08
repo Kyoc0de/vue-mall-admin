@@ -5,7 +5,6 @@
             <div>
                 <img src="../assets/avatar.png" width="50px" alt="">
                 <span>电商管理系统</span>
-                <span style="font-size: 18px"> 鹅总, 下午好</span>
             </div>
             <el-button type="info" @click="logout">退出</el-button></el-header>
         <!--            页面主体-->
