@@ -29,7 +29,8 @@ import {
     Switch,
     Tooltip,
     Pagination,
-    Dialog
+    Dialog,
+    MessageBox
 } from 'element-ui'
 
 
@@ -58,3 +59,4 @@ Vue.use(Pagination)
 Vue.use(Dialog)
 //讲弹窗组件挂载到vue上 可通过this.$message访问
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
