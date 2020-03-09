@@ -27,7 +27,9 @@ import {
     Table,
     TableColumn,
     Switch,
-    Tooltip
+    Tooltip,
+    Pagination,
+    Dialog
 } from 'element-ui'
 
 
@@ -52,5 +54,7 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Switch)
 Vue.use(Tooltip)
+Vue.use(Pagination)
+Vue.use(Dialog)
 //讲弹窗组件挂载到vue上 可通过this.$message访问
 Vue.prototype.$message = Message
