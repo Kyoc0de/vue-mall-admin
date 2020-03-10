@@ -126,6 +126,7 @@
             return{
                 //所有角色列表
                 rolelist:[],
+                rightsList: [],
                 addDialogVisible: false,
                 //    添加角色的表单数据
                 addRoleForm: {
@@ -163,7 +164,7 @@
                 editDialogVisible:false,
                 //控制修改用户权限对话框的显示与隐藏
                 setRightDialogVisible: false,
-                rightsList: [],
+
                 //树形控件的绑定对象
                 treeProps:{
                     label:'authName',
