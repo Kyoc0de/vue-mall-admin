@@ -31,7 +31,8 @@ import {
     Pagination,
     Dialog,
     MessageBox,
-    Tag
+    Tag,
+    Tree
 } from 'element-ui'
 
 
@@ -59,6 +60,7 @@ Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Tag)
+Vue.use(Tree)
 //讲弹窗组件挂载到vue上 可通过this.$message访问
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
