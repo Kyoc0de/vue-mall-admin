@@ -7,21 +7,57 @@
             <el-breadcrumb-item>商品分类</el-breadcrumb-item>
         </el-breadcrumb>
 <!--        卡片视图区域-->
-        <el-card>123</el-card>
+        <el-card>
+            <el-row>
+                <el-col>
+                    <el-button type="primary">添加分类</el-button>
+                </el-col>
+            </el-row>
+            <el-row>
+<!--                表格-->
+                <tree-table :data="catelist" :columns="columns" :selection-type="false" :expand-type="false" show-index index-text="#" border>
+
+                </tree-table>
+            </el-row>
+        </el-card>
     </div>
 </template>
 <script>
     export default {
         data(){
             return{
-
+                //查询条件
+                queryInfo:{
+                    type: 3,
+                    pagenum: 1,
+                    pagesize: 5
+                },
+                //商品分类数据列表默认为空
+                catelist:[],
+                //总数据条数
+                total:0,
+                columns:[
+                    {
+                        label:'分类名称',
+                        prop:'cat_name'
+                    }
+                ]
             }
         },
         created() {
-
+            this.getCateList()
         },
         methods:{
-
+            //获取商品分类数据
+            async getCateList(){
+             const {data:res} = await this.$http.get('categories',{params: this.queryInfo})
+                if(res.meta.status!==200){
+                    return this.$message.error('获取商品失败')
+                }
+                 this.catelist = res.data.result
+                //为总数据条数复制
+                this.total = res.data.total
+            }
         }
     }
 </script>
