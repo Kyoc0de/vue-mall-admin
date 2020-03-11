@@ -31,7 +31,7 @@
 <!--        tab-->
             <el-tabs v-model="activeName" @tab-click="handleTabClick">
                 <el-tab-pane label="动态参数" name="many">
-                    <el-button type="primary" size="mini" :disabled="isBtnDisabled">添加参数</el-button>
+                    <el-button type="primary" size="mini" :disabled="isBtnDisabled" @click="addDialogVisible=true">添加参数</el-button>
 <!--           动态参数表格         -->
                     <el-table :data="manyTableData" border stripe>
 <!--                        展开行-->
@@ -39,7 +39,7 @@
                         <el-table-column type="index"></el-table-column>
                         <el-table-column label="参数名称" prop="attr_name"></el-table-column>
                         <el-table-column label="操作">
-                            <template slot-scope="">
+                            <template slot-scope>
                                 <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
                                 <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
                             </template>
@@ -47,14 +47,14 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="静态属性" name="only">
-                    <el-button type="primary" size="mini" :disabled="isBtnDisabled">添加属性</el-button>
+                    <el-button type="primary" size="mini" :disabled="isBtnDisabled" @click="addDialogVisible=true">添加属性</el-button>
                     <el-table :data="onlyTableData" border stripe>
                         <!--                        展开行-->
                         <el-table-column type="expand"></el-table-column>
                         <el-table-column type="index"></el-table-column>
                         <el-table-column label="参数名称" prop="attr_name"></el-table-column>
                         <el-table-column label="操作">
-                            <template slot-scope="">
+                            <template slot-scope>
                                 <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
                                 <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
                             </template>
@@ -64,6 +64,25 @@
 
             </el-tabs>
         </el-card>
+
+<!--        添加参数对话框-->
+        <el-dialog
+                :title="'添加'+titleText"
+                :visible.sync="addDialogVisible"
+                width="50%"
+                @close="addDialogClosed"
+        >
+<!--            添加参数对话框-->
+            <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px" >
+                <el-form-item :label="titleText" prop="attr_name">
+                    <el-input v-model="addForm.attr_name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="addDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addParams">确 定</el-button>
+  </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -76,7 +95,21 @@
                 selectedCateKeys:[],
                 activeName: 'many',
                 manyTableData:[],
-                onlyTableData:[]
+                onlyTableData:[],
+                //控制添加对话框的显示与隐藏
+                addDialogVisible:false,
+            //    添加参数的表单对象
+                addForm:{
+                    attr_name: ''
+                },
+                //添加表单数据验证
+                addFormRules:{
+                    attr_name: [{
+                        required:true,
+                        message:'请输入名称',
+                        trigger:'blur'
+                    }]
+                }
             }
         },
         created() {
@@ -124,6 +157,27 @@
                 }else{
                     this.onlyTableData = res.data
                 }
+            },
+            addDialogClosed(){
+                this.$refs.addFormRef.resetFields()
+            },
+            //点击按钮,天机数据
+            addParams(){
+                this.$refs.addFormRef.validate(async valid =>{
+                    if(!valid) return
+                    const {data: res} = await this.$http.post(`categories/${this.cateId}/attributes`,
+                        {
+                            attr_name: this.addForm.attr_name,
+                            attr_sel: this.activeName
+                        })
+
+                    if(res.meta.status!==201){
+                        return this.$message.error('添加参数s失败')
+                    }
+                    this.$message.success('添加参数成功')
+                    this.addDialogVisible = false
+                    this.getParamsData()
+                })
             }
         },
         computed:{
@@ -139,6 +193,13 @@
                     return this.selectedCateKeys[2]
                 }
                 return  null
+            },
+            //动态计算标题文本
+            titleText(){
+                if(this.activeName === 'many'){
+                    return '动态参数'
+                }
+                return '静态属性'
             }
         }
     }
